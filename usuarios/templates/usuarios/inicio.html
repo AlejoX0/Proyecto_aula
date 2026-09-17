@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Sistema de Películas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #141414;
+            color: white;
+        }
+
+        nav {
+            background: #222;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .usuario {
+            color: #ccc;
+        }
+
+        .cerrar {
+            margin-left: 20px;
+            color: #e50914;
+            text-decoration: none;
+        }
+
+        .contenido {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #aaa;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            🎬 Sistema de Películas
+        </div>
+
+        <div>
+            {% if user.is_authenticated %}
+                <span class="usuario">
+                    Bienvenido, {{ user.username }}
+                </span>
+
+                <a class="cerrar" href="{% url 'logout' %}">
+                    Cerrar sesión
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="contenido">
+
+        <h1>Bienvenido al sistema</h1>
+
+        <p>
+            Sistema de Gestión y Recomendación de Películas
+        </p>
+
+        <p style="margin-top: 15px;">
+            Próximamente podrás explorar películas,
+            calificarlas y recibir recomendaciones.
+        </p>
+
+    </div>
+
+</body>
+</html>

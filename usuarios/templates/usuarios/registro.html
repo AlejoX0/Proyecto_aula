@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Sistema de Películas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #141414;
+            color: white;
+        }
+
+        .contenedor {
+            width: 400px;
+            padding: 35px;
+            background: #222;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: none;
+            border-radius: 6px;
+            background: #333;
+            color: white;
+        }
+
+        input:focus {
+            outline: 2px solid #e50914;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #e50914;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #b20710;
+        }
+
+        .error {
+            background: #5c1515;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 20px;
+            color: #aaa;
+        }
+
+        a {
+            color: #e50914;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>Crear cuenta</h1>
+
+        <p class="subtitulo">
+            Sistema de Gestión y Recomendación de Películas
+        </p>
+
+        {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="username">Nombre de usuario</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                required
+            >
+
+            <label for="email">Correo electrónico</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                required
+            >
+
+            <label for="password">Contraseña</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+            >
+
+            <button type="submit">
+                Registrarse
+            </button>
+        </form>
+
+        <p class="login">
+            ¿Ya tienes una cuenta?
+            <a href="{% url 'login' %}">Inicia sesión</a>
+        </p>
+
+    </div>
+
+</body>
+</html>

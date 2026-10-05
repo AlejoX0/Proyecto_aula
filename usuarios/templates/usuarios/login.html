@@ -120,6 +120,7 @@
 
         <form method="POST">
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next|default:'' }}">
 
             <label for="username">Nombre de usuario</label>
             <input

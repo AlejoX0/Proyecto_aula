@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #141414;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 35px;
+            background: #242424;
+            border-radius: 12px;
+        }
+
+        h1 {
+            color: #e50914;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background: #111;
+            color: white;
+        }
+
+        select {
+            min-height: 120px;
+        }
+
+        button {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cancelar {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            background: #444;
+            color: white;
+            text-decoration: none;
+        }
+
+        .errorlist {
+            color: #ff6666;
+            margin-top: 0;
+        }
+
+        .ayuda {
+            color: #aaa;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>{{ titulo }}</h1>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+
+            <div>
+                {{ field.label_tag }}
+
+                {{ field }}
+
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
+
+                {% if field.help_text %}
+                    <p class="ayuda">
+                        {{ field.help_text }}
+                    </p>
+                {% endif %}
+            </div>
+
+        {% endfor %}
+
+        <button type="submit">
+            Guardar
+        </button>
+
+        {% if request.resolver_match.url_name == "crear_genero" or request.resolver_match.url_name == "editar_genero" %}
+
+            <a class="cancelar" href="{% url 'lista_generos' %}">
+                Cancelar
+            </a>
+
+        {% else %}
+
+            <a class="cancelar" href="{% url 'lista_peliculas' %}">
+                Cancelar
+            </a>
+
+        {% endif %}
+
+    </form>
+
+</div>
+
+</body>
+</html>

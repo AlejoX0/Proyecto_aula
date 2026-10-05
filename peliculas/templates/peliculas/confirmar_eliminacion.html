@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Confirmar eliminación</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #141414;
+            color: white;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 35px;
+            background: #242424;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #e50914;
+        }
+
+        .advertencia {
+            color: #ff9999;
+            margin-bottom: 25px;
+        }
+
+        button {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cancelar {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            background: #444;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Confirmar eliminación</h1>
+
+    <p>
+        ¿Está seguro de que desea eliminar:
+    </p>
+
+    <h2>{{ objeto }}</h2>
+
+    <p class="advertencia">
+        Esta acción no se puede deshacer.
+    </p>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            Sí, eliminar
+        </button>
+
+        {% if tipo == "película" %}
+
+            <a class="cancelar" href="{% url 'lista_peliculas' %}">
+                Cancelar
+            </a>
+
+        {% else %}
+
+            <a class="cancelar" href="{% url 'lista_generos' %}">
+                Cancelar
+            </a>
+
+        {% endif %}
+
+    </form>
+
+</div>
+
+</body>
+</html>

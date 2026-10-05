@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Géneros</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #141414;
+            color: white;
+        }
+
+        header {
+            background: #222;
+            padding: 20px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #e50914;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            margin-right: 10px;
+            margin-bottom: 25px;
+            background: #e50914;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .secundario {
+            background: #333;
+        }
+
+        .mensaje {
+            background: #1f6f43;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .genero {
+            background: #242424;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .genero h2 {
+            color: #e50914;
+            margin-top: 0;
+        }
+
+        .genero a {
+            color: #ff5555;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .vacio {
+            background: #242424;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎬 Géneros de películas</h1>
+</header>
+
+<div class="container">
+
+    <a class="btn secundario" href="{% url 'lista_peliculas' %}">
+        ← Volver al catálogo
+    </a>
+
+    {% if request.user.is_staff or request.user.perfil.rol == "administrador" %}
+        <a class="btn" href="{% url 'crear_genero' %}">
+            + Nuevo género
+        </a>
+    {% endif %}
+
+    {% for message in messages %}
+        <div class="mensaje">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for genero in generos %}
+
+        <div class="genero">
+
+            <h2>{{ genero.nombre }}</h2>
+
+            <p>
+                {{ genero.descripcion|default:"Sin descripción." }}
+            </p>
+
+            {% if request.user.is_staff or request.user.perfil.rol == "administrador" %}
+
+                <a href="{% url 'editar_genero' genero.pk %}">
+                    Editar
+                </a>
+
+                <a href="{% url 'eliminar_genero' genero.pk %}">
+                    Eliminar
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <div class="vacio">
+
+            <h2>No hay géneros registrados</h2>
+
+            <p>
+                Todavía no existen géneros en la base de datos.
+            </p>
+
+            {% if request.user.is_staff or request.user.perfil.rol == "administrador" %}
+                <p>
+                    Utiliza "Nuevo género" para crear el primero.
+                </p>
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

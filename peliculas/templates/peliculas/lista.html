@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de películas</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #141414;
+            color: white;
+        }
+
+        header {
+            background: #222;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #e50914;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .botones {
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background: #e50914;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .btn.secundario {
+            background: #333;
+        }
+
+        .mensaje {
+            background: #1f6f43;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .vacio {
+            background: #242424;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .pelicula {
+            background: #242424;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pelicula h2 {
+            color: #e50914;
+        }
+
+        .acciones {
+            margin-top: 20px;
+        }
+
+        .acciones a {
+            color: #ff4d4d;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎬 Sistema de Películas</h1>
+
+    <div>
+        <span>Bienvenido, {{ request.user.username }}</span>
+        <a href="{% url 'inicio' %}">Inicio</a>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+    </div>
+</header>
+
+<div class="container">
+
+    <h2>Catálogo de películas</h2>
+
+    {% for message in messages %}
+        <div class="mensaje">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="botones">
+
+        <a class="btn secundario"
+           href="{% url 'lista_generos' %}">
+            Ver géneros
+        </a>
+
+        {% if request.user.is_staff or request.user.perfil.rol == "administrador" %}
+
+            <a class="btn"
+               href="{% url 'crear_pelicula' %}">
+                + Nueva película
+            </a>
+
+            <a class="btn"
+               href="{% url 'crear_genero' %}">
+                + Nuevo género
+            </a>
+
+        {% endif %}
+
+    </div>
+
+    {% for pelicula in peliculas %}
+
+        <div class="pelicula">
+
+            <h2>{{ pelicula.titulo }}</h2>
+
+            <p>
+                <strong>Año:</strong>
+                {{ pelicula.anio }}
+            </p>
+
+            <p>
+                <strong>Duración:</strong>
+                {{ pelicula.duracion }} minutos
+            </p>
+
+            <p>
+                <strong>Sinopsis:</strong>
+                {{ pelicula.sinopsis }}
+            </p>
+
+            <p>
+                <strong>Géneros:</strong>
+
+                {% for genero in pelicula.generos.all %}
+                    {{ genero.nombre }}
+                    {% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Sin género asignado.
+                {% endfor %}
+            </p>
+
+            <div class="acciones">
+
+                <a href="{% url 'detalle_pelicula' pelicula.pk %}">
+                    Ver detalles
+                </a>
+
+                {% if request.user.is_staff or request.user.perfil.rol == "administrador" %}
+
+                    <a href="{% url 'editar_pelicula' pelicula.pk %}">
+                        Editar
+                    </a>
+
+                    <a href="{% url 'eliminar_pelicula' pelicula.pk %}">
+                        Eliminar
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="vacio">
+
+            <h2>No hay películas registradas</h2>
+
+            <p>
+                Actualmente el catálogo está vacío.
+            </p>
+
+            {% if request.user.is_staff or request.user.perfil.rol == "administrador" %}
+
+                <p>
+                    Como administrador podrás registrar la primera película.
+                </p>
+
+            {% else %}
+
+                <p>
+                    El administrador deberá agregar películas al catálogo.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

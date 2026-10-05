@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ pelicula.titulo }}</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #141414;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 35px;
+            background: #242424;
+            border-radius: 12px;
+        }
+
+        h1 {
+            color: #e50914;
+        }
+
+        .poster {
+            max-width: 280px;
+            max-height: 400px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 18px;
+            margin-right: 10px;
+            margin-top: 20px;
+            border-radius: 6px;
+            background: #e50914;
+            color: white;
+            text-decoration: none;
+        }
+
+        .secundario {
+            background: #333;
+        }
+
+        .dato {
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>{{ pelicula.titulo }}</h1>
+
+    {% if pelicula.imagen %}
+        <img
+            class="poster"
+            src="{{ pelicula.imagen }}"
+            alt="Póster de {{ pelicula.titulo }}"
+        >
+    {% endif %}
+
+    <div class="dato">
+        <strong>Sinopsis:</strong>
+        <p>{{ pelicula.sinopsis }}</p>
+    </div>
+
+    <div class="dato">
+        <strong>Año:</strong>
+        {{ pelicula.anio }}
+    </div>
+
+    <div class="dato">
+        <strong>Duración:</strong>
+        {{ pelicula.duracion }} minutos
+    </div>
+
+    <div class="dato">
+
+        <strong>Géneros:</strong>
+
+        {% for genero in pelicula.generos.all %}
+
+            {{ genero.nombre }}
+
+            {% if not forloop.last %}
+                ,
+            {% endif %}
+
+        {% empty %}
+
+            Sin géneros asignados.
+
+        {% endfor %}
+
+    </div>
+
+    {% if request.user.is_staff or request.user.perfil.rol == "administrador" %}
+
+        <a class="btn"
+           href="{% url 'editar_pelicula' pelicula.pk %}">
+            Editar
+        </a>
+
+        <a class="btn"
+           href="{% url 'eliminar_pelicula' pelicula.pk %}">
+            Eliminar
+        </a>
+
+    {% endif %}
+
+    <a class="btn secundario"
+       href="{% url 'lista_peliculas' %}">
+        Volver al catálogo
+    </a>
+
+</div>
+
+</body>
+</html>
